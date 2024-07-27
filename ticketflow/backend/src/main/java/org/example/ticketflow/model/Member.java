@@ -3,6 +3,7 @@ package org.example.ticketflow.model;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 import java.util.UUID;
 
 import jakarta.persistence.*;
@@ -14,8 +15,13 @@ public class Member {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long databaseId;
     private UUID publicId = UUID.randomUUID();
+    @Column(unique = true)
     private String username;
     private String password;
+    @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
+    @Enumerated(EnumType.STRING)
+    @CollectionTable(name = "member_roles", joinColumns = @JoinColumn(name = "member_id"))
+    private Set<Role> roles;
     @OneToMany
     @JoinColumn(name = "todoId")
     private List<Todo> todos;
@@ -56,6 +62,14 @@ public class Member {
 
     public List<Todo> getTodos() {
         return todos;
+    }
+
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
     }
 
     public void setTodos(List<Todo> todos) {
