@@ -1,11 +1,7 @@
 package org.example.ticketflow.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
-import java.util.Objects;
 import java.util.UUID;
 
 @Entity
@@ -16,7 +12,9 @@ public class Todo {
     private UUID publicId = UUID.randomUUID();
     private String title;
     private String description;
-
+    @ManyToOne
+    @JoinColumn(name = "memberId")
+    private Member member;
 
     public Long getDatabaseId() {
         return databaseId;
@@ -50,25 +48,11 @@ public class Todo {
         this.description = description;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Todo todo)) return false;
-        return publicId == todo.publicId && Objects.equals(databaseId, todo.databaseId) && Objects.equals(title, todo.title) && Objects.equals(description, todo.description);
+    public Member getMember() {
+        return member;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(publicId, databaseId, title, description);
-    }
-
-    @Override
-    public String toString() {
-        return "Todo{" +
-                "publicId=" + publicId +
-                ", databaseId=" + databaseId +
-                ", title='" + title + '\'' +
-                ", description='" + description + '\'' +
-                '}';
+    public void setMember(Member member) {
+        this.member = member;
     }
 }
