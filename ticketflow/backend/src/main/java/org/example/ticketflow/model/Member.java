@@ -102,7 +102,6 @@ public class Member {
                 "databaseId=" + databaseId +
                 ", publicId=" + publicId +
                 ", username='" + username + '\'' +
-                ", password='" + password + '\'' +
                 ", todos=" + todos +
                 ", createdAt=" + createdAt +
                 '}';
