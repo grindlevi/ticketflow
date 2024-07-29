@@ -65,6 +65,7 @@ public class WebSecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/todos").permitAll()
+                        .requestMatchers("/todos/**").permitAll()
 
                         //Error
                         .requestMatchers("/error").permitAll()

@@ -1,40 +1,111 @@
 package org.example.ticketflow.service;
 
+import org.example.ticketflow.model.DTO.MemberDTO;
+import org.example.ticketflow.model.DTO.NewTodoDTO;
+import org.example.ticketflow.model.DTO.TodoDTO;
+import org.example.ticketflow.model.Member;
 import org.example.ticketflow.model.Todo;
+import org.example.ticketflow.repository.MemberRepository;
 import org.example.ticketflow.repository.TodoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
+import java.time.LocalDateTime;
+import java.util.*;
 
 @Service
 public class TodoService {
 
     private final TodoRepository todoRepository;
+    private final MemberRepository memberRepository;
 
     @Autowired
-    public TodoService(TodoRepository todoRepository) {
+    public TodoService(TodoRepository todoRepository, MemberRepository memberRepository) {
         this.todoRepository = todoRepository;
+        this.memberRepository = memberRepository;
     }
 
-    public Todo createTodo(Todo todo) {
-        return todoRepository.save(todo);
+    public TodoDTO createTodo(NewTodoDTO newTodoDTO) {
+        try {
+            Todo todoToSave = new Todo();
+            todoToSave.setTitle(newTodoDTO.title());
+            todoToSave.setDescription(newTodoDTO.description());
+            todoToSave.setCompleted(false);
+            todoToSave.setCreationDate(LocalDateTime.now());
+            todoToSave.setPriority(newTodoDTO.priority());
+
+            Member member = memberRepository.findByUsernameIgnoreCase(newTodoDTO.member().getUsername()).orElseThrow();
+            todoToSave.setMember(member);
+
+            todoRepository.save(todoToSave);
+
+            return toTodoDTO(todoToSave, member);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            throw new RuntimeException(e);
+        }
     }
 
-    public List<Todo> getAllTodos() {
-        return todoRepository.findAll();
+    public List<TodoDTO> getAllTodos() {
+        List<Todo> todos = todoRepository.findAll();
+
+        List<TodoDTO> todoDTOs = new ArrayList<>();
+        for (Todo todo : todos) {
+            Member member = memberRepository.findByUsernameIgnoreCase(todo.getMember().getUsername()).orElseThrow();
+            todoDTOs.add(toTodoDTO(todo, member));
+        }
+        return todoDTOs;
     }
 
-    public Optional<Todo> getTodo(Long id) {
-        return todoRepository.findById(id);
+    public TodoDTO getTodo(UUID id) {
+        Todo todo = todoRepository.getByPublicId(id)
+                .orElseThrow(() -> new NoSuchElementException("Todo not found"));
+
+        Member member = memberRepository.findByUsernameIgnoreCase(todo.getMember().getUsername()).orElseThrow();
+
+        return toTodoDTO(todo, member);
     }
 
-    public void deleteTodo(Long id) {
-        todoRepository.deleteById(id);
+    public void deleteTodo(UUID id) {
+        todoRepository.deleteByPublicId(id);
     }
 
-    public Todo updateTodo(Long id, Todo todo) {
-        return todoRepository.save(todo);
+    public TodoDTO updateTodo(TodoDTO todoDTO) {
+        Todo todo = todoRepository.getByPublicId(todoDTO.publicId())
+                .orElseThrow(() -> new NoSuchElementException("Todo not found"));
+
+        todo.setTitle(todoDTO.title());
+        todo.setDescription(todoDTO.description());
+        todo.setCompleted(todoDTO.isCompleted());
+        todo.setPriority(todoDTO.priority());
+
+        todoRepository.save(todo);
+
+        Member member = memberRepository.findByUsernameIgnoreCase(todo.getMember().getUsername()).orElseThrow();
+
+        return toTodoDTO(todo, member);
+    }
+
+    private TodoDTO toTodoDTO(Todo todo, Member member) {
+        MemberDTO owner = toMemberDTO(member);
+        return new TodoDTO(
+                todo.getPublicId(),
+                todo.getTitle(),
+                todo.getDescription(),
+                owner,
+                todo.getPriority(),
+                todo.isCompleted(),
+                todo.getCreationDate()
+        );
+    }
+
+    private MemberDTO toMemberDTO(Member member) {
+        return new MemberDTO(
+                member.getPublicId(),
+                member.getUsername(),
+                member.getRoles(),
+                member.getTodos(),
+                member.getCreatedAt()
+        );
     }
 }
