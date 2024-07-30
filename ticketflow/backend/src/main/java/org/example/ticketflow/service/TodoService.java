@@ -4,11 +4,13 @@ import org.example.ticketflow.model.DTO.MemberDTO;
 import org.example.ticketflow.model.DTO.NewTodoDTO;
 import org.example.ticketflow.model.DTO.TodoDTO;
 import org.example.ticketflow.model.Member;
+import org.example.ticketflow.model.Priority;
 import org.example.ticketflow.model.Todo;
 import org.example.ticketflow.repository.MemberRepository;
 import org.example.ticketflow.repository.TodoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.*;
@@ -25,6 +27,7 @@ public class TodoService {
         this.memberRepository = memberRepository;
     }
 
+    @Transactional
     public TodoDTO createTodo(NewTodoDTO newTodoDTO) {
         try {
             Todo todoToSave = new Todo();
@@ -32,10 +35,14 @@ public class TodoService {
             todoToSave.setDescription(newTodoDTO.description());
             todoToSave.setCompleted(false);
             todoToSave.setCreationDate(LocalDateTime.now());
-            todoToSave.setPriority(newTodoDTO.priority());
 
-            Member member = memberRepository.findByUsernameIgnoreCase(newTodoDTO.member().getUsername()).orElseThrow();
-            todoToSave.setMember(member);
+            Priority priority = newTodoDTO.priority();
+            System.out.println("Priority: " + priority);
+            todoToSave.setPriority(priority);
+
+            Member member = memberRepository.findByUsernameIgnoreCase(newTodoDTO.username()).orElseThrow();
+           // todoToSave.setMember(member);
+            member.addTodo(todoToSave);
 
             todoRepository.save(todoToSave);
 

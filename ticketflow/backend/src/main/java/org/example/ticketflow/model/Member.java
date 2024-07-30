@@ -6,6 +6,7 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 
@@ -20,10 +21,10 @@ public class Member {
     private String password;
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
     @Enumerated(EnumType.STRING)
-    @CollectionTable(name = "member_roles", joinColumns = @JoinColumn(name = "member_id"))
+    @CollectionTable(name = "role", joinColumns = @JoinColumn(name = "member_id"))
     private Set<Role> roles;
-    @OneToMany
-    @JoinColumn(name = "todoId")
+    @OneToMany(mappedBy = "member")
+    @JsonManagedReference
     private List<Todo> todos;
     private LocalDateTime createdAt;
 
@@ -105,5 +106,10 @@ public class Member {
                 ", todos=" + todos +
                 ", createdAt=" + createdAt +
                 '}';
+    }
+
+    public void addTodo(Todo newTodo) {
+        this.todos.add(newTodo);
+        newTodo.setMember(this);
     }
 }
