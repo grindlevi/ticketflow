@@ -2,7 +2,6 @@ package org.example.ticketflow.controller;
 
 import org.example.ticketflow.model.DTO.NewTodoDTO;
 import org.example.ticketflow.model.DTO.TodoDTO;
-import org.example.ticketflow.model.Todo;
 import org.example.ticketflow.service.TodoService;
 import org.springframework.web.bind.annotation.*;
 

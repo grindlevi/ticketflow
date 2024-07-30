@@ -1,5 +1,6 @@
 package org.example.ticketflow.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -17,9 +18,11 @@ public class Todo {
     private String description;
     private LocalDateTime creationDate;
     private boolean isCompleted;
+    @Enumerated(EnumType.STRING)
     private Priority priority;
     @ManyToOne
-    @JoinColumn(name = "memberId")
+    @JoinColumn(name = "member_id")
+    @JsonBackReference
     private Member member;
 
     public Long getDatabaseId() {
