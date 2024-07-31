@@ -1,10 +1,7 @@
 package org.example.ticketflow.model;
 
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
@@ -25,8 +22,8 @@ public class Member {
     private Set<Role> roles;
     @OneToMany(mappedBy = "member")
     @JsonManagedReference
-    private List<Todo> todos;
-    private LocalDateTime createdAt;
+    private List<Todo> todos = new ArrayList<>();
+    private LocalDateTime createdAt = LocalDateTime.now();
 
 
     public Long getDatabaseId() {
