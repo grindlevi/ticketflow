@@ -14,6 +14,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.*;
@@ -32,9 +33,10 @@ public class MemberService {
         this.authenticationManager = authenticationManager;
     }
 
+    @Transactional
     public void registerMember(NewMemberDTO newMemberDTO) {
         if (memberRepository.existsByUsername(newMemberDTO.username())) {
-            throw new IllegalArgumentException("Username or Email already exists");
+            throw new IllegalArgumentException("Username already exists");
         }
 
         Member member = new Member();
