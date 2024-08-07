@@ -1,0 +1,49 @@
+name: CI Workflow
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up Java
+      uses: actions/setup-java@v3
+      with:
+        java-version: '21'
+
+    - name: Install dependencies
+      run: mvn install -DskipTests
+
+    - name: Run tests
+      env:
+        JWT_SECRET: ${{ secrets.JWT_SECRET }}
+      run: mvn test
+
+    - name: Send email notification
+      if: success() || failure()
+      run: |
+        curl -X POST \
+          https://api.mailersend.com/v1/email \
+          -H 'Content-Type: application/json' \
+          -H 'X-Requested-With: XMLHttpRequest' \
+          -H 'Authorization: Bearer ${{ secrets.MAILERSEND_API_TOKEN }}' \
+          -d '{
+              "from": {
+                  "email": "${{ secrets.EMAIL_SENDER }}"
+              },
+              "to": [
+                  {
+                      "email": "${{ secrets.EMAIL_RECIPIENT }}"
+                  }
+              ],
+              "subject": "CI Build Notification for ${{ github.repository }}",
+              "text": "The CI build for repository ${{ github.repository }} has completed. Status: ${{ job.status }}.",
+              "html": "<p>The CI build for repository ${{ github.repository }} has completed. Status: ${{ job.status }}.</p>"
+            }'
