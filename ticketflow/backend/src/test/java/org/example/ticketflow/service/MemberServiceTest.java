@@ -67,7 +67,7 @@ class MemberServiceTest {
                 () -> memberService.registerMember(newMemberDTO)
         );
 
-        assertEquals("Username or Email already exists", thrown.getMessage());
+        assertEquals("Username already exists", thrown.getMessage());
     }
 
     @Test

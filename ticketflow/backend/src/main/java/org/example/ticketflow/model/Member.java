@@ -12,9 +12,11 @@ public class Member {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long databaseId;
+    @Column(nullable = false)
     private UUID publicId = UUID.randomUUID();
     @Column(unique = true)
     private String username;
+    @Column(nullable = false)
     private String password;
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
     @Enumerated(EnumType.STRING)
@@ -23,8 +25,8 @@ public class Member {
     @OneToMany(mappedBy = "member")
     @JsonManagedReference
     private List<Todo> todos = new ArrayList<>();
+    @Column(nullable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
-
 
     public Long getDatabaseId() {
         return databaseId;
@@ -58,16 +60,16 @@ public class Member {
         this.password = password;
     }
 
-    public List<Todo> getTodos() {
-        return todos;
-    }
-
     public Set<Role> getRoles() {
         return roles;
     }
 
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
+    }
+
+    public List<Todo> getTodos() {
+        return todos;
     }
 
     public void setTodos(List<Todo> todos) {
