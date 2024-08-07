@@ -30,23 +30,11 @@ jobs:
       working-directory: backend
 
     - name: Send email notification
-      if: success() || failure()
+      if: always() # Ensures the email is sent regardless of success or failure
       run: |
-        curl -X POST \
-          https://api.mailersend.com/v1/email \
-          -H 'Content-Type: application/json' \
-          -H 'X-Requested-With: XMLHttpRequest' \
-          -H 'Authorization: Bearer ${{ secrets.MAILERSEND_API_KEY }}' \
-          -d '{
-              "from": {
-                  "email": "${{ secrets.EMAIL_SENDER }}"
-              },
-              "to": [
-                  {
-                      "email": "${{ secrets.EMAIL_RECIPIENT }}"
-                  }
-              ],
-              "subject": "CI Build Notification for ${{ github.repository }}",
-              "text": "The CI build for repository ${{ github.repository }} has completed. Status: ${{ job.status }}.",
-              "html": "<p>The CI build for repository ${{ github.repository }} has completed. Status: ${{ job.status }}.</p>"
-            }'
+        echo "Sending email notification"
+        curl -s --url 'smtps://smtp.gmail.com:465' --ssl-reqd \
+        --mail-from "${{ secrets.EMAIL_SENDER }}" \
+        --mail-rcpt "${{ secrets.EMAIL_RECIPIENT }}" \
+        --user "${{ secrets.EMAIL_SENDER }}:${{ secrets.GMAIL_PASSWORD }}" \
+        -T <(echo -e "From: ${{ secrets.GMAIL_USER }}\nTo: ${{ secrets.EMAIL_RECIPIENT }}\nSubject: CI Build Notification for ${{ github.repository }}\n\nThe CI build for repository ${{ github.repository }} has completed. Status: ${{ job.status }}.")
