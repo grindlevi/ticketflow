@@ -36,7 +36,7 @@ jobs:
           https://api.mailersend.com/v1/email \
           -H 'Content-Type: application/json' \
           -H 'X-Requested-With: XMLHttpRequest' \
-          -H 'Authorization: Bearer ${{ secrets.MAILERSEND_API_TOKEN }}' \
+          -H 'Authorization: Bearer ${{ secrets.MAILERSEND_API_KEY }}' \
           -d '{
               "from": {
                   "email": "${{ secrets.EMAIL_SENDER }}"
