@@ -26,6 +26,7 @@ jobs:
       env:
         JWT_SECRET: ${{ secrets.JWT_SECRET }}
       run: mvn test
+      working-directory: ./backend
 
     - name: Send email notification
       if: success() || failure()
