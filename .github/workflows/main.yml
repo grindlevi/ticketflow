@@ -21,16 +21,16 @@ jobs:
 
     - name: Install dependencies
       run: mvn install -DskipTests
-      working-directory: ticketflow/ticketflow/backend
+      working-directory: ./backend
 
     - name: Run tests
       env:
         JWT_SECRET: ${{ secrets.JWT_SECRET }}
       run: mvn test
-      working-directory: backend
+      working-directory: ./backend
 
     - name: Send email notification
-      if: always() # Ensures the email is sent regardless of success or failure
+      if: always()
       run: |
         echo "Sending email notification"
         curl -s --url 'smtps://smtp.gmail.com:465' --ssl-reqd \
