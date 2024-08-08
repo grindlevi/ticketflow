@@ -21,7 +21,7 @@ jobs:
 
     - name: Install dependencies
       run: mvn install -DskipTests
-      working-directory: backend
+      working-directory: ticketflow/ticketflow/backend
 
     - name: Run tests
       env:
