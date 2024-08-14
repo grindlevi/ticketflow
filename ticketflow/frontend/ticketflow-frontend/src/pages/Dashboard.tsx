@@ -1,9 +1,11 @@
-
-
+import AddTicketForm from "../components/AddTicketForm";
 const Dashboard = () => {
   return (
-    <div>Dashboard</div>
-  )
-}
+    <>
+      <div>Dashboard</div>
+      <AddTicketForm />
+    </>
+  );
+};
 
-export default Dashboard
+export default Dashboard;
