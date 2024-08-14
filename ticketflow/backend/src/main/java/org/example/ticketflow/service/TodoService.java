@@ -115,4 +115,15 @@ public class TodoService {
                 member.getCreatedAt()
         );
     }
+
+    public List<TodoDTO> getAllTodosByMember(String username) {
+        Member member = memberRepository.findByUsernameIgnoreCase(username).orElseThrow();
+        List<Todo> todos = member.getTodos();
+
+        List<TodoDTO> todoDTOs = new ArrayList<>();
+        for (Todo todo : todos) {
+            todoDTOs.add(toTodoDTO(todo, member));
+        }
+        return todoDTOs;
+    }
 }

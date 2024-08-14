@@ -21,14 +21,19 @@ public class TodoController {
         return todoService.createTodo(newTodoDto);
     }
 
-    @GetMapping("/todos")
+    @GetMapping("/todos/all")
     public List<TodoDTO> getAllTodos() {
         return todoService.getAllTodos();
     }
 
-    @GetMapping("/todos/{id}")
+    @GetMapping("/todos/id/{id}")
     public TodoDTO getTodoById(@PathVariable("id") UUID id) {
         return todoService.getTodo(id);
+    }
+
+    @GetMapping("/todos/{username}")
+    public List<TodoDTO> getMemberTodos(@PathVariable String username) {
+        return todoService.getAllTodosByMember(username);
     }
 
     @DeleteMapping("/todos/{id}")

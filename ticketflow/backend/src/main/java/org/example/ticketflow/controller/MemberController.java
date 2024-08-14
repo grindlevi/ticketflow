@@ -30,17 +30,17 @@ public class MemberController {
         return memberService.authenticate(loginRequest);
     }
 
-    @DeleteMapping("/member/{publicId}")
+    @DeleteMapping("/admin/member/{publicId}")
     public void deleteMember(@PathVariable UUID publicId) {
         memberRepository.deleteByPublicId(publicId);
     }
 
-    @GetMapping("/member")
+    @GetMapping("/admin/member")
     public Set<MemberDTO> getAllMembers() {
         return memberService.getAllMembers();
     }
 
-    @GetMapping("/member/{publicId}")
+    @GetMapping("/admin/member/{publicId}")
     public MemberDTO getMember(@PathVariable UUID publicId) {
         return memberService.getMember(publicId);
     }

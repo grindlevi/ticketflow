@@ -52,6 +52,7 @@ const AddTicketForm = () => {
 
   return (
     <div className="addTicket">
+      <h3>Create a new ticket</h3>
         <form onSubmit={handleSubmit}>
           <div className="title">
             <label htmlFor="title">Title</label>
