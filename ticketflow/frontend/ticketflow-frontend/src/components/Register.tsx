@@ -5,7 +5,7 @@ interface RegisterProps {
 }
 
 const Register: React.FC<RegisterProps> = ({ onRegisterSuccess }) => {
-
+  const [passwordAlert, setPasswodAlert] = useState(false)
   const [formData, setFormData] = useState({
     username: "",
     password: "",
@@ -23,7 +23,7 @@ const Register: React.FC<RegisterProps> = ({ onRegisterSuccess }) => {
     e.preventDefault();
 
     if (formData.password !== formData.confirmPassword) {
-      alert("Passwords do not match!");
+      setPasswodAlert(!passwordAlert)
       return;
     }
 
@@ -91,6 +91,9 @@ const Register: React.FC<RegisterProps> = ({ onRegisterSuccess }) => {
                 onChange={handleInputChange}
                 required
               />
+            <div className="passwordAlert">
+              {passwordAlert ? "Passwords do not match." : ""}
+            </div>
             </div>
           }
           <button type="submit">Register</button>
