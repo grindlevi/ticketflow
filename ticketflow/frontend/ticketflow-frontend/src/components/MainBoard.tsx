@@ -35,11 +35,11 @@ const MainBoard = () => {
       <h3>Your tickets</h3>
       <div className="tickets">
         {tickets && tickets.map((ticket: Ticket) =>(
-          <>
-          <h4>{ticket.title}</h4>
-          <h5>{ticket.description}</h5>
-          <h5>{ticket.priority}</h5>
-          </>
+          <div key={ticket.publicId}>
+            <h4>{ticket.title}</h4>
+            <h5>{ticket.description}</h5>
+            <h5>{ticket.priority}</h5>
+          </div>        
         ))}
       </div>
     </div>

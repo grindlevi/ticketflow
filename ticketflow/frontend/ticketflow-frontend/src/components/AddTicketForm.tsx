@@ -1,7 +1,11 @@
 import { FormEvent, useState } from "react";
 import { Priority } from "../utils/enums";
 
-const AddTicketForm = () => {
+interface AddTicketFormProps {
+  onFormSubmit?: () => void;
+}
+
+const AddTicketForm: React.FC<AddTicketFormProps> = ({ onFormSubmit }) => {
   const [ticketFormData, setTicketFormData] = useState({
     title: "",
     description: "",
@@ -34,17 +38,20 @@ const AddTicketForm = () => {
         },
         body: JSON.stringify(ticketFormData),
       });
-      if(!response.ok) {
-        throw new Error('Failed to add ticket')
+      if (!response.ok) {
+        throw new Error("Failed to add ticket");
       }
       setTicketFormData({
         title: "",
         description: "",
-        username: localStorage.getItem('username'),
-        priority: Priority
-      }
+        username: localStorage.getItem("username"),
+        priority: Priority,
+      });
 
-      )
+      if(onFormSubmit) {
+        onFormSubmit()
+      }
+      
     } catch (error) {
       console.error(error);
     }
@@ -53,42 +60,42 @@ const AddTicketForm = () => {
   return (
     <div className="addTicket">
       <h3>Create a new ticket</h3>
-        <form onSubmit={handleSubmit}>
-          <div className="title">
-            <label htmlFor="title">Title</label>
-            <input
-              type="text"
-              name="title"
-              id="title"
-              placeholder="Title"
-              value={ticketFormData.title}
-              onChange={handleInputChange}
-            />
-          </div>
-          <div className="description">
-            <label htmlFor="description">Description</label>
-            <textarea
-              name="description"
-              id="description"
-              placeholder="Description"
-              value={ticketFormData.description}
-              onChange={handleInputChange}
-            />
-          </div>
-          <div className="priority">
-            <label htmlFor="priority">Priority</label>
-            <select name="priority" id="priority" onChange={handleInputChange}>
-              <option value={Priority.LOW}>Low</option>
-              <option value={Priority.MEDIUM}>Medium</option>
-              <option value={Priority.HIGH}>High</option>
-            </select>
-          </div>
-          <div className="submitTicket">
-            <button>Submit</button>
-          </div>
-        </form>
-      </div>
-  )
-}
+      <form onSubmit={handleSubmit}>
+        <div className="title">
+          <label htmlFor="title">Title</label>
+          <input
+            type="text"
+            name="title"
+            id="title"
+            placeholder="Title"
+            value={ticketFormData.title}
+            onChange={handleInputChange}
+          />
+        </div>
+        <div className="description">
+          <label htmlFor="description">Description</label>
+          <textarea
+            name="description"
+            id="description"
+            placeholder="Description"
+            value={ticketFormData.description}
+            onChange={handleInputChange}
+          />
+        </div>
+        <div className="priority">
+          <label htmlFor="priority">Priority</label>
+          <select name="priority" id="priority" onChange={handleInputChange}>
+            <option value={Priority.LOW}>Low</option>
+            <option value={Priority.MEDIUM}>Medium</option>
+            <option value={Priority.HIGH}>High</option>
+          </select>
+        </div>
+        <div className="submitTicket">
+          <button>Submit</button>
+        </div>
+      </form>
+    </div>
+  );
+};
 
-export default AddTicketForm
+export default AddTicketForm;

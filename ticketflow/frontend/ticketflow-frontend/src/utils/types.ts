@@ -7,6 +7,7 @@ export type LoginResponse = {
 }
 
 export type Ticket = {
+  publicId: string,
   title: string,
   description: string,
   username: string,
