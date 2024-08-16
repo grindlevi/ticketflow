@@ -1,16 +1,19 @@
 import { FormEvent, useState } from "react";
 import { Priority } from "../utils/enums";
+import { Ticket } from "../utils/types";
 
 interface AddTicketFormProps {
-  onFormSubmit?: () => void;
+  onFormSubmit?: (newTicket: Ticket) => void;
 }
 
 const AddTicketForm: React.FC<AddTicketFormProps> = ({ onFormSubmit }) => {
-  const [ticketFormData, setTicketFormData] = useState({
+  const [ticketFormData, setTicketFormData] = useState<Ticket>({
+    publicId: "",
     title: "",
     description: "",
-    username: localStorage.getItem("username"),
-    priority: Priority,
+    username: localStorage.getItem("username")!,
+    priority: Priority.HIGH,
+    isCompleted: false
   });
 
   const handleInputChange = (
@@ -41,15 +44,20 @@ const AddTicketForm: React.FC<AddTicketFormProps> = ({ onFormSubmit }) => {
       if (!response.ok) {
         throw new Error("Failed to add ticket");
       }
+
+      const newTicket = await response.json()
+
       setTicketFormData({
+        publicId: "",
         title: "",
         description: "",
         username: localStorage.getItem("username"),
-        priority: Priority,
+        priority: Priority.LOW,
+        isCompleted: false
       });
 
       if(onFormSubmit) {
-        onFormSubmit()
+        onFormSubmit(newTicket)
       }
       
     } catch (error) {

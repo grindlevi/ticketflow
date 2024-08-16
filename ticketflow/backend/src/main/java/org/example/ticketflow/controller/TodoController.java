@@ -36,6 +36,11 @@ public class TodoController {
         return todoService.getAllTodosByMember(username);
     }
 
+    @GetMapping("/todos/{username}/{criteria}")
+    public List<TodoDTO> getMemberTodosSorted(@PathVariable String username, @PathVariable String criteria) {
+        return todoService.getSortedTodosByMember(username, criteria);
+    }
+
     @DeleteMapping("/todos/{id}")
     public void deleteTodo(@PathVariable("id") UUID publicId) {
         todoService.deleteTodo(publicId);
