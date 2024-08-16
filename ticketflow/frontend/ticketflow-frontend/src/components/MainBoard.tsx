@@ -1,31 +1,32 @@
 import { Ticket } from "../utils/types";
+import "../css/mainboard.css";
 
 interface MainBoardProps {
   tickets: Ticket[];
-  setTickets: React.Dispatch<React.SetStateAction<Ticket[] | []>>
+  setTickets: React.Dispatch<React.SetStateAction<Ticket[] | []>>;
 }
 
 const MainBoard: React.FC<MainBoardProps> = ({ tickets, setTickets }) => {
-
   async function handleSort(criteria: string) {
-    const username: string = localStorage.getItem('username')!
-    const jwt: string = localStorage.getItem('jwt')!
+    const username: string = localStorage.getItem("username")!;
+    const jwt: string = localStorage.getItem("jwt")!;
     try {
-      const response: Response = await fetch(`/api/todos/${username}/${criteria}`, {
-        headers: {
-          'Authorization': `Bearer ${jwt}`
+      const response: Response = await fetch(
+        `/api/todos/${username}/${criteria}`,
+        {
+          headers: {
+            Authorization: `Bearer ${jwt}`,
+          },
         }
-      })
-      if(!response.ok){
-        throw new Error('Fetching sorted tickets failed.')
+      );
+      if (!response.ok) {
+        throw new Error("Fetching sorted tickets failed.");
       }
 
-      const sortedTickets: Ticket[] | [] = await response.json()
-      setTickets(sortedTickets)
-      
+      const sortedTickets: Ticket[] | [] = await response.json();
+      setTickets(sortedTickets);
     } catch (error) {
       console.error("An error occured during fetching sorted tickets");
-      
     }
   }
 
@@ -33,12 +34,24 @@ const MainBoard: React.FC<MainBoardProps> = ({ tickets, setTickets }) => {
     <div className="main-board">
       <h3>Your tickets</h3>
       <div className="tickets">
-        <button className="sort-by-date" onClick={() => handleSort("creationDate")}>
-          📅
-        </button>
-        <button className="sort-by-priority" onClick={() => handleSort("priority")}>
-          📢
-        </button>
+        <div className="button-sort-by-creation-div">
+          <span className="button-sort-by-creation-tooltip-text">Sort tickets by creation date</span>
+          <button
+            className="sort-by-creation-button"
+            onClick={() => handleSort("creationDate")}
+          >
+            📅
+          </button>
+        </div>
+        <div className="button-sort-by-priority-div">
+        <span className="button-sort-by-priority-tooltip-text">Sort tickets by priority</span>
+          <button
+            className="sort-by-priority-button"
+            onClick={() => handleSort("priority")}
+          >
+            📢
+          </button>
+        </div>
         {tickets.length === 0 ? (
           <p>No tickets available</p>
         ) : (
