@@ -10,6 +10,7 @@ export type Ticket = {
   publicId: string,
   title: string,
   description: string,
-  username: string,
+  username: string | null,
   priority: Priority
+  isCompleted: boolean
 }

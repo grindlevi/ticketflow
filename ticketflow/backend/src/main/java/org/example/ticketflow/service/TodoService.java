@@ -126,4 +126,16 @@ public class TodoService {
         }
         return todoDTOs;
     }
+
+    public List<TodoDTO> getSortedTodosByMember(String username, String criteria) {
+        List<TodoDTO> todoDTOS = getAllTodosByMember(username);
+
+        return switch (criteria) {
+            case "creationDate" -> todoDTOS.stream()
+                    .sorted(Comparator.comparing(TodoDTO::createdAt)).toList();
+            case "priority" -> todoDTOS.stream()
+                    .sorted(Comparator.comparing(TodoDTO::priority)).toList();
+            default -> throw new RuntimeException("Invalid criteria: " + criteria);
+        };
+    }
 }

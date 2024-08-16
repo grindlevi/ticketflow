@@ -1,49 +1,60 @@
-import { useEffect, useState } from "react"
-import { Ticket } from "../utils/types"
+import { Ticket } from "../utils/types";
 
-const MainBoard = () => {
-  const [tickets, setTickets] = useState<Ticket[] | []>([])
+interface MainBoardProps {
+  tickets: Ticket[];
+  setTickets: React.Dispatch<React.SetStateAction<Ticket[] | []>>
+}
 
-  useEffect(() => {
-    const getTickets = async() => {
-      const token = localStorage.getItem('jwt')
-      const username = localStorage.getItem('username')
-      try {
-        const response: Response = await fetch(`/api/todos/${username}`, {
-          headers: {
-            'Authorization': `Bearer ${token}`
-          }
-        })
-  
-        if(!response.ok){
-          throw new Error("Fetching tickets failed.")
+const MainBoard: React.FC<MainBoardProps> = ({ tickets, setTickets }) => {
+
+  async function handleSort(criteria: string) {
+    const username: string = localStorage.getItem('username')!
+    const jwt: string = localStorage.getItem('jwt')!
+    try {
+      const response: Response = await fetch(`/api/todos/${username}/${criteria}`, {
+        headers: {
+          'Authorization': `Bearer ${jwt}`
         }
-  
-        const tickets: Ticket[] | [] = await response.json()
-        setTickets(tickets)
-  
-      } catch (error) {
-        console.error('Error fetching tickets: ', error);
-        
+      })
+      if(!response.ok){
+        throw new Error('Fetching sorted tickets failed.')
       }
+
+      const sortedTickets: Ticket[] | [] = await response.json()
+      setTickets(sortedTickets)
+      
+    } catch (error) {
+      console.error("An error occured during fetching sorted tickets");
+      
     }
-    getTickets()
-  }, [])
+  }
 
   return (
     <div className="main-board">
       <h3>Your tickets</h3>
       <div className="tickets">
-        {tickets && tickets.map((ticket: Ticket) =>(
-          <div key={ticket.publicId}>
-            <h4>{ticket.title}</h4>
-            <h5>{ticket.description}</h5>
-            <h5>{ticket.priority}</h5>
-          </div>        
-        ))}
+        <button className="sort-by-date" onClick={() => handleSort("creationDate")}>
+          📅
+        </button>
+        <button className="sort-by-priority" onClick={() => handleSort("priority")}>
+          📢
+        </button>
+        {tickets.length === 0 ? (
+          <p>No tickets available</p>
+        ) : (
+          tickets &&
+          tickets.map((ticket: Ticket) => (
+            <div key={ticket.publicId} className="ticket" draggable={true}>
+              <h4>Title: {ticket.title}</h4>
+              <h5>Task: {ticket.description}</h5>
+              <h5>Priority: {ticket.priority}</h5>
+              <h5>Status: {ticket.isCompleted ? "✅" : "❌"}</h5>
+            </div>
+          ))
+        )}
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default MainBoard
+export default MainBoard;
