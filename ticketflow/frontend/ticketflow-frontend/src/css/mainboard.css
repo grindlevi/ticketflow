@@ -1,0 +1,140 @@
+.button-sort-by-creation-div {
+  position: relative;
+  display: inline-block;
+}
+
+.button-sort-by-priority-div {
+  position: relative;
+  display: inline-block;
+}
+
+/* Tooltip creation for ticket sorting buttons */
+/* Sort by creation date button*/
+/* Tooltip */
+.button-sort-by-creation-tooltip-text {
+  visibility: hidden;
+  width: 120px;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  padding: 5px 0;
+  border-radius: 6px;
+  top: -5px;
+  right: 105%;
+  opacity: 0;
+  transition: opacity 1s;
+ 
+/* Position the tooltip text */
+  position: absolute;
+  z-index: 1;
+}
+
+/* Index tooltip arrow to the left of the button */
+.button-sort-by-creation-tooltip-text::after {
+  content: " ";
+  position: absolute;
+  top: 50%;
+  left: 100%;
+  margin-top: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: transparent transparent transparent black;
+}
+
+/* Tooltip fade in when hovered */
+.button-sort-by-creation-div:hover .button-sort-by-creation-tooltip-text {
+  opacity: 2;
+}
+
+/*Tooltip appears when hovered over */
+.button-sort-by-creation-div:hover .button-sort-by-creation-tooltip-text {
+  visibility: visible;
+}
+
+/* Sort by priority button */
+/* Tooltip */
+.button-sort-by-priority-tooltip-text {
+  visibility: hidden;
+  width: 120px;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  padding: 5px 0;
+  border-radius: 6px;
+  top: -5px;
+  left: 105%;
+  opacity: 0;
+  transition: opacity 1s;
+ 
+/* Position the tooltip text */
+  position: absolute;
+  z-index: 1;
+}
+
+/* Index tooltip arrow to the right of the button */
+.button-sort-by-priority-tooltip-text::after {
+  content: " ";
+  position: absolute;
+  top: 50%;
+  right: 100%;
+  margin-top: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: transparent black transparent transparent ;
+}
+
+/* Tooltip fade in when hovered */
+.button-sort-by-priority-div:hover .button-sort-by-priority-tooltip-text {
+  opacity: 2;
+}
+
+/*Tooltip appears when hovered over */
+.button-sort-by-priority-div:hover .button-sort-by-priority-tooltip-text {
+  visibility: visible;
+}
+
+.tickets {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.ticket {
+  background-color: #ffffff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 15px;
+  margin: 10px 0;
+  width: 100%;
+  max-width: 400px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s;
+  cursor: grab;
+  overflow: hidden;
+  word-wrap: break-word; 
+}
+
+.ticket:hover {
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+.ticket h4 {
+  margin: 0;
+  font-size: 18px;
+  color: #333;
+}
+
+.ticket h5 {
+  margin: 5px 0;
+  font-size: 16px;
+  color: #555;
+  white-space: pre-wrap;
+}
+
+.ticket h5:last-child {
+  margin-bottom: 0;
+}
