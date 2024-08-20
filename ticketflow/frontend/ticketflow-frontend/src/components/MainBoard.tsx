@@ -35,7 +35,9 @@ const MainBoard: React.FC<MainBoardProps> = ({ tickets, setTickets }) => {
       <h3>Your tickets</h3>
       <div className="tickets">
         <div className="button-sort-by-creation-div">
-          <span className="button-sort-by-creation-tooltip-text">Sort tickets by creation date</span>
+          <span className="button-sort-by-creation-tooltip-text">
+            Sort tickets by creation date
+          </span>
           <button
             className="sort-by-creation-button"
             onClick={() => handleSort("creationDate")}
@@ -44,7 +46,9 @@ const MainBoard: React.FC<MainBoardProps> = ({ tickets, setTickets }) => {
           </button>
         </div>
         <div className="button-sort-by-priority-div">
-        <span className="button-sort-by-priority-tooltip-text">Sort tickets by priority</span>
+          <span className="button-sort-by-priority-tooltip-text">
+            Sort tickets by priority
+          </span>
           <button
             className="sort-by-priority-button"
             onClick={() => handleSort("priority")}
@@ -61,7 +65,14 @@ const MainBoard: React.FC<MainBoardProps> = ({ tickets, setTickets }) => {
               <h4>Title: {ticket.title}</h4>
               <h5>Task: {ticket.description}</h5>
               <h5>Priority: {ticket.priority}</h5>
-              <h5>Status: {ticket.isCompleted ? "✅" : "❌"}</h5>
+              <div className="ticket-status">
+                <span className="ticket-iscompleted-tooltip-text">
+                  {ticket.isCompleted ? "Completed" : "In progress"}  
+                </span>
+                <h5 className={ticket.isCompleted ? "ticket-status-completed" : "ticket-status-in-progress"}>
+                  Status: {ticket.isCompleted ? "✅" : "❌"}
+                </h5>
+              </div>
             </div>
           ))
         )}
