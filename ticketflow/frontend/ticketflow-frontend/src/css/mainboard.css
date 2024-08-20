@@ -1,3 +1,13 @@
+/* Main board div element*/
+.main-board {
+  display: flex;
+  justify-content: space-between;
+  padding: 20px;
+  background-color: #f2f2f2;
+  border-radius: 8 px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
 /* Sort buttons */
 .button-sort-by-creation-div {
   position: relative;
@@ -94,8 +104,9 @@
   visibility: visible;
 }
 
-/*Tickets*/
-.tickets {
+/*Tickets div*/
+.backlog-container {
+  flex-basis: 250px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -112,7 +123,7 @@
   padding: 15px;
   margin: 10px 0;
   width: 100%;
-  max-width: 400px;
+  max-width: 800px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   transition: box-shadow 0.3s;
   cursor: grab;
@@ -186,4 +197,18 @@
 /*Tooltip appears when hovered over */
 .ticket-status:hover .ticket-iscompleted-tooltip-text {
   visibility: visible;
+}
+
+/* Todo drop zone div*/
+.todo-drop-container, 
+.in-progress-drop-container,
+.finished-drop-container {
+  flex-basis: 250px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
