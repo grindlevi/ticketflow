@@ -1,12 +1,9 @@
 package org.example.ticketflow.service;
 
+import org.example.ticketflow.model.*;
 import org.example.ticketflow.model.DTO.MemberDTO;
 import org.example.ticketflow.model.DTO.NewTodoDTO;
 import org.example.ticketflow.model.DTO.TodoDTO;
-import org.example.ticketflow.model.Member;
-import org.example.ticketflow.model.Priority;
-import org.example.ticketflow.model.Role;
-import org.example.ticketflow.model.Todo;
 import org.example.ticketflow.repository.MemberRepository;
 import org.example.ticketflow.repository.TodoRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -43,7 +40,7 @@ public class TodoServiceTest {
     @Test
     @Transactional
     void createTodo_success() {
-        NewTodoDTO newTodoDTO = new NewTodoDTO("title", "description", "username", Priority.LOW);
+        NewTodoDTO newTodoDTO = new NewTodoDTO("title", "description", "username", Priority.LOW, TodoContainer.BACKLOG);
 
         Member member = new Member();
         member.setUsername("username");
@@ -73,7 +70,7 @@ public class TodoServiceTest {
 
     @Test
     void createTodo_memberNotFound() {
-        NewTodoDTO newTodoDTO = new NewTodoDTO("title", "description", "username", Priority.HIGH);
+        NewTodoDTO newTodoDTO = new NewTodoDTO("title", "description", "username", Priority.HIGH, TodoContainer.BACKLOG);
 
         when(memberRepository.findByUsernameIgnoreCase(anyString())).thenReturn(Optional.empty());
 
@@ -189,7 +186,7 @@ public class TodoServiceTest {
                 LocalDateTime.now()
         );
 
-        TodoDTO todoDTO = new TodoDTO(todoId, "title", "description", memberDTO, Priority.HIGH, false, LocalDateTime.now());
+        TodoDTO todoDTO = new TodoDTO(todoId, "title", "description", memberDTO, Priority.HIGH, false, LocalDateTime.now(), TodoContainer.BACKLOG);
         Todo todo = new Todo();
         todo.setPublicId(todoId);
         todo.setTitle("oldTitle");
@@ -228,7 +225,7 @@ public class TodoServiceTest {
                 LocalDateTime.now()
         );
         UUID todoId = UUID.randomUUID();
-        TodoDTO todoDTO = new TodoDTO(todoId, "title", "description", member, Priority.HIGH, false, LocalDateTime.now());
+        TodoDTO todoDTO = new TodoDTO(todoId, "title", "description", member, Priority.HIGH, false, LocalDateTime.now(), TodoContainer.BACKLOG);
 
         when(todoRepository.getByPublicId(todoId)).thenReturn(Optional.empty());
 
