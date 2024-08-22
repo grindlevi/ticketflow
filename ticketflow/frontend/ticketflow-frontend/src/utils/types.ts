@@ -1,4 +1,4 @@
-import { Priority } from "./enums"
+import { Container, Priority } from "./enums"
 
 export type LoginResponse = {
   jwt: string,
@@ -12,5 +12,6 @@ export type Ticket = {
   description: string,
   username: string | null,
   priority: Priority
-  isCompleted: boolean
+  isCompleted: boolean,
+  todoContainer: Container
 }

@@ -1,5 +1,5 @@
 import { FormEvent, useState } from "react";
-import { Priority } from "../utils/enums";
+import { Container, Priority } from "../utils/enums";
 import { Ticket } from "../utils/types";
 
 interface AddTicketFormProps {
@@ -13,7 +13,8 @@ const AddTicketForm: React.FC<AddTicketFormProps> = ({ onFormSubmit }) => {
     description: "",
     username: localStorage.getItem("username")!,
     priority: Priority.HIGH,
-    isCompleted: false
+    isCompleted: false,
+    todoContainer: Container.BACKLOG
   });
 
   const handleInputChange = (
@@ -53,7 +54,8 @@ const AddTicketForm: React.FC<AddTicketFormProps> = ({ onFormSubmit }) => {
         description: "",
         username: localStorage.getItem("username"),
         priority: Priority.LOW,
-        isCompleted: false
+        isCompleted: false,
+        todoContainer: Container.BACKLOG
       });
 
       if(onFormSubmit) {

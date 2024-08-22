@@ -32,6 +32,8 @@ const Dashboard = () => {
   
         const tickets: Ticket[] | [] = await response.json()
         setTickets(tickets)
+        console.log(tickets);
+        
   
       } catch (error) {
         console.error('Error fetching tickets: ', error);

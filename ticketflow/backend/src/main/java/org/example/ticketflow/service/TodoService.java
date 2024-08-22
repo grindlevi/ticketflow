@@ -6,6 +6,7 @@ import org.example.ticketflow.model.DTO.TodoDTO;
 import org.example.ticketflow.model.Member;
 import org.example.ticketflow.model.Priority;
 import org.example.ticketflow.model.Todo;
+import org.example.ticketflow.model.TodoContainer;
 import org.example.ticketflow.repository.MemberRepository;
 import org.example.ticketflow.repository.TodoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +36,7 @@ public class TodoService {
             todoToSave.setDescription(newTodoDTO.description());
             todoToSave.setCompleted(false);
             todoToSave.setCreationDate(LocalDateTime.now());
+            todoToSave.setTodoContainer(TodoContainer.BACKLOG);
 
             Priority priority = newTodoDTO.priority();
             System.out.println("Priority: " + priority);
@@ -78,6 +80,7 @@ public class TodoService {
     }
 
     public TodoDTO updateTodo(TodoDTO todoDTO) {
+        System.out.println("updated todo: " + todoDTO);
         Todo todo = todoRepository.getByPublicId(todoDTO.publicId())
                 .orElseThrow(() -> new NoSuchElementException("Todo not found"));
 
@@ -85,6 +88,7 @@ public class TodoService {
         todo.setDescription(todoDTO.description());
         todo.setCompleted(todoDTO.isCompleted());
         todo.setPriority(todoDTO.priority());
+        todo.setTodoContainer(todoDTO.todoContainer());
 
         todoRepository.save(todo);
 
@@ -102,7 +106,8 @@ public class TodoService {
                 owner,
                 todo.getPriority(),
                 todo.isCompleted(),
-                todo.getCreationDate()
+                todo.getCreationDate(),
+                todo.getTodoContainer()
         );
     }
 

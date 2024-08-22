@@ -200,6 +200,7 @@
 }
 
 /* Todo drop zone div*/
+.backlog-container,
 .todo-drop-container, 
 .in-progress-drop-container,
 .finished-drop-container {
