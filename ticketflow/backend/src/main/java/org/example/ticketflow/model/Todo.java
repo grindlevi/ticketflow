@@ -25,6 +25,17 @@ public class Todo {
     @JsonBackReference
     private Member member;
 
+    public TodoContainer getTodoContainer() {
+        return todoContainer;
+    }
+
+    public void setTodoContainer(TodoContainer todoContainer) {
+        this.todoContainer = todoContainer;
+    }
+
+    // Tracks the corresponding container div on frontend
+    private TodoContainer todoContainer;
+
     public Long getDatabaseId() {
         return databaseId;
     }
@@ -93,12 +104,12 @@ public class Todo {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Todo todo)) return false;
-        return isCompleted == todo.isCompleted && Objects.equals(databaseId, todo.databaseId) && Objects.equals(publicId, todo.publicId) && Objects.equals(title, todo.title) && Objects.equals(description, todo.description) && Objects.equals(creationDate, todo.creationDate) && priority == todo.priority && Objects.equals(member, todo.member);
+        return isCompleted == todo.isCompleted && Objects.equals(databaseId, todo.databaseId) && Objects.equals(publicId, todo.publicId) && Objects.equals(title, todo.title) && Objects.equals(description, todo.description) && Objects.equals(creationDate, todo.creationDate) && priority == todo.priority && Objects.equals(member, todo.member) && todoContainer == todo.todoContainer;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(databaseId, publicId, title, description, creationDate, isCompleted, priority, member);
+        return Objects.hash(databaseId, publicId, title, description, creationDate, isCompleted, priority, member, todoContainer);
     }
 
     @Override
@@ -112,8 +123,7 @@ public class Todo {
                 ", isCompleted=" + isCompleted +
                 ", priority=" + priority +
                 ", member=" + member +
+                ", todoContainer=" + todoContainer +
                 '}';
     }
-
-
 }
