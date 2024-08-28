@@ -1,0 +1,95 @@
+/* Sort buttons */
+.button-sort-div {
+  position: relative;
+  display: inline-block;
+}
+
+.button-sort-by-priority-div {
+  position: relative;
+  display: inline-block;
+}
+
+/* Tooltip creation for ticket sorting buttons */
+/* Sort by creation date button*/
+/* Tooltip */
+.button-sort-by-creation-tooltip-text {
+  visibility: hidden;
+  width: 120px;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  padding: 5px 0;
+  border-radius: 6px;
+  top: -5px;
+  right: 105%;
+  opacity: 0;
+  transition: opacity 1s;
+ 
+/* Position the tooltip text */
+  position: absolute;
+  z-index: 1;
+}
+
+/* Index tooltip arrow to the left of the button */
+.button-sort-by-creation-tooltip-text::after {
+  content: " ";
+  position: absolute;
+  top: 50%;
+  left: 100%;
+  margin-top: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: transparent transparent transparent black;
+}
+
+/* Tooltip fade in when hovered */
+.button-sort-div:hover .button-sort-by-creation-tooltip-text {
+  opacity: 2;
+}
+
+/*Tooltip appears when hovered over */
+.button-sort-div:hover .button-sort-by-creation-tooltip-text {
+  visibility: visible;
+}
+
+/* Sort by priority button */
+/* Tooltip */
+.button-sort-by-priority-tooltip-text {
+  visibility: hidden;
+  width: 120px;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  padding: 5px 0;
+  border-radius: 6px;
+  top: -5px;
+  left: 105%;
+  opacity: 0;
+  transition: opacity 1s;
+ 
+/* Position the tooltip text */
+  position: absolute;
+  z-index: 1;
+}
+
+/* Index tooltip arrow to the right of the button */
+.button-sort-by-priority-tooltip-text::after {
+  content: " ";
+  position: absolute;
+  top: 50%;
+  right: 100%;
+  margin-top: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: transparent black transparent transparent ;
+}
+
+/* Tooltip fade in when hovered */
+.button-sort-div:hover .button-sort-by-priority-tooltip-text {
+  opacity: 2;
+}
+
+/*Tooltip appears when hovered over */
+.button-sort-div:hover .button-sort-by-priority-tooltip-text {
+  visibility: visible;
+}
