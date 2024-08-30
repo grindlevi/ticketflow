@@ -1,0 +1,95 @@
+@font-face {
+  font-family: 'Mangotree';
+  src: url('../assets/fonts/Great-Mango_Demo-BF6565f8ab686e7.ttf') format('ttf');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Figtree';
+  src: url('../assets/fonts/Figtree-Italic-VariableFont_wght.ttf') format('ttf');
+  font-weight: normal;
+  font-style: normal;
+}
+
+.addTicket {
+  background-color: #f0f8ff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.addTicket-header {
+  margin-top: 0px;
+  padding-top: 0px;
+  font-size: 46px;
+  font-family: 'Mangotree';
+  margin-bottom: 20px;
+  text-align: center;
+  color: #118a7e;
+
+  background: linear-gradient(to left, #93e4c1, #118a7e);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent; 
+}
+
+.addTicket form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.addTicket label {
+  display: block;
+  font-family: 'Figtree';
+  font-size: 26px;
+  color: #42b883;
+  margin-bottom: 5px;
+}
+
+.addTicket input::placeholder,
+.addTicket textarea::placeholder,
+.addTicket select::selection {
+  color: #118a7e;
+  font-family: 'Figtree';
+  opacity: 0.75;
+}
+
+.addTicket input[type="text"],
+.addTicket textarea,
+.addTicket select {
+  padding: 10px;
+  border: 1px solid #118a7e;
+  border-radius: 4px;
+  font-size: 14px;
+  color: #1f6f78;
+  background-color: #ffffff;
+}
+
+.addTicket input[type="text"]:focus,
+.addTicket textarea:focus,
+.addTicket select:focus {
+  outline: none;
+  border-color: #118a7e;
+  box-shadow: 0px 0px 5px #4d7111;
+}
+
+.addTicket textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.submitTicket button {
+  padding: 10px 15px;
+  font-size: 14px;
+  color: #ffffff;
+  background-color: #93e4c1;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.submitTicket button:hover {
+  background-color: #3baea0;
+}
