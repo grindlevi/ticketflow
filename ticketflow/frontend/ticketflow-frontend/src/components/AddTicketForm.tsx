@@ -1,6 +1,7 @@
 import { FormEvent, useState } from "react";
 import { Container, Priority } from "../utils/enums";
 import { Ticket } from "../utils/types";
+import "../css/addTicketForm.css"
 
 interface AddTicketFormProps {
   onFormSubmit?: (newTicket: Ticket) => void;
@@ -69,7 +70,7 @@ const AddTicketForm: React.FC<AddTicketFormProps> = ({ onFormSubmit }) => {
 
   return (
     <div className="addTicket">
-      <h3>Create a new ticket</h3>
+      <h1 className="addTicket-header">Create a new ticket</h1>
       <form onSubmit={handleSubmit}>
         <div className="title">
           <label htmlFor="title">Title</label>
@@ -77,7 +78,7 @@ const AddTicketForm: React.FC<AddTicketFormProps> = ({ onFormSubmit }) => {
             type="text"
             name="title"
             id="title"
-            placeholder="Title"
+            placeholder="Enter a title"
             value={ticketFormData.title}
             onChange={handleInputChange}
           />
@@ -87,7 +88,7 @@ const AddTicketForm: React.FC<AddTicketFormProps> = ({ onFormSubmit }) => {
           <textarea
             name="description"
             id="description"
-            placeholder="Description"
+            placeholder="Enter a description"
             value={ticketFormData.description}
             onChange={handleInputChange}
           />
