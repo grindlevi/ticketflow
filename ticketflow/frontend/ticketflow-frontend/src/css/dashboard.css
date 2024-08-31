@@ -1,0 +1,21 @@
+@font-face {
+  font-family: 'Exo2';
+  src: url('../assets/fonts/Exo2-VariableFont_wght.ttf') format('ttf');
+  font-weight: normal;
+  font-style: normal;
+}
+
+.add-ticket-container {
+  position: relative;
+  display: inline-block;
+}
+
+.dashboard-main {
+  background-color: #F3F7EC;
+  border-radius: 2%;
+}
+
+.dashboard-greeting {
+  padding-top: 30px;
+  font-family: 'Exo2';
+}

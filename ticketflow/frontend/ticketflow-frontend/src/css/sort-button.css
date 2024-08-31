@@ -2,6 +2,7 @@
 .button-sort-div {
   position: relative;
   display: inline-block;
+  padding: 10px;
 }
 
 .button-sort-by-priority-div {
@@ -92,4 +93,8 @@
 /*Tooltip appears when hovered over */
 .button-sort-div:hover .button-sort-by-priority-tooltip-text {
   visibility: visible;
+}
+
+.sort-button {
+  background-color: #F3F7EC;
 }

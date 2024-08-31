@@ -31,6 +31,7 @@ const BoardContainer: React.FC<BoardContainerProps> = ({
       onDragOver={onDragOver}
     >
       <h3>{title}</h3>
+      <div className="sort-button-container">
       <SortButton
         spanClassName="button-sort-by-creation-tooltip-text"
         tooltipText="Sort tickets by creation date"
@@ -43,6 +44,7 @@ const BoardContainer: React.FC<BoardContainerProps> = ({
         onClick={onSortByPriority}
         buttonLabel="📢"
       />
+      </div>
       {tickets &&
         tickets.map((ticket: Ticket) => (
           <TicketComponent key={ticket.publicId} ticket={ticket} onDragStart={onDragStart} />

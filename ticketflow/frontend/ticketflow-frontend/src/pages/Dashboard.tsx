@@ -1,12 +1,17 @@
 import { useEffect, useState } from "react";
+
 import AddTicketForm from "../components/AddTicketForm";
 import MainBoard from "../components/MainBoard";
 import Modal from "../components/Modal";
 import { Ticket } from "../utils/types";
 
+import '../css/dashboard.css'
+import '../css/add-ticket-button.css'
+
 const Dashboard = () => {
   const [showModal, setShowModal] = useState<boolean>(false);
   const [tickets, setTickets] = useState<Ticket[] | []>([]);
+  const [username, setUsername] = useState<string | null>(null)
 
   const toggleModal = (): void => {
     setShowModal(!showModal);
@@ -20,6 +25,7 @@ const Dashboard = () => {
     const getTickets = async () => {
       const token = localStorage.getItem("jwt");
       const username = localStorage.getItem("username");
+      setUsername(username)
       try {
         const response: Response = await fetch(`/api/todos/${username}`, {
           headers: {
@@ -44,9 +50,10 @@ const Dashboard = () => {
   return (
     <>
       <div className="dashboard-main">
-        <h1>Dashboard</h1>
-        <div className="addTicket">
-          <button type="button" onClick={toggleModal}>
+        <h1 className="dashboard-greeting">{`Good day, ${username}!`}</h1>
+        <div className="add-ticket-container">
+          <span className="add-ticket-tooltip-text">Add a new ticket</span>
+          <button className="add-ticket-button" type="button" onClick={toggleModal}>
             +
           </button>
         </div>
