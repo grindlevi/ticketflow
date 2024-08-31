@@ -3,21 +3,13 @@
   display: flex;
   justify-content: space-between;
   padding: 20px;
-  background-color: #f2f2f2;
-  border-radius: 8 px;
+  background-color: #F3F7EC;
+  border-radius: 5%;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-/*Tickets container div*/
-.backlog-container {
-  flex-basis: 250px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 20px;
-  background-color: #f9f9f9;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+.sort-button-container {
+  flex-direction: row;
 }
 
 /* Todo drop zone div*/
@@ -28,9 +20,9 @@
   flex-basis: 250px;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items:center;
   padding: 20px;
-  background-color: #f9f9f9;
+  background-color: #E88D67;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }

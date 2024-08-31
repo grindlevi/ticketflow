@@ -1,7 +1,7 @@
 import { FormEvent, useState } from "react";
 import { Container, Priority } from "../utils/enums";
 import { Ticket } from "../utils/types";
-import "../css/addTicketForm.css"
+import "../css/add-ticket-form.css"
 
 interface AddTicketFormProps {
   onFormSubmit?: (newTicket: Ticket) => void;
