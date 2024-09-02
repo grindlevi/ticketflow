@@ -1,0 +1,60 @@
+.sign-out {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  padding: 8px 16px;
+  background-color: #FFCC70;
+  color: white;
+  border: none;
+  border-radius: 4px; 
+  cursor: pointer;
+  transition: 1s;
+}
+
+.sign-out:hover {
+background-color: #D04848;
+}
+
+/* Tooltip */
+.sign-out-tooltip-text {
+  visibility: hidden;
+  width: 200px;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  padding: 5px 0;
+  border-radius: 6px;
+
+  /* Adjusted position */
+  top: 5%;
+  right: 5%;
+  transform: translateY(-50%);
+  opacity: 0;
+  transition: opacity 1s;
+
+  /* Position the tooltip text */
+  position: absolute;
+  z-index: 1;
+}
+
+/* Adjust tooltip arrow */
+.sign-out-tooltip-text::after {
+  content: " ";
+  position: absolute;
+  top: 50%;
+  left: 100%;
+  margin-top: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: transparent transparent transparent black;
+}
+
+/* Tooltip fade in when hovered */
+.sign-out-button-container:hover .sign-out-tooltip-text {
+  opacity: 1;
+}
+
+/* Tooltip appears when hovered over */
+.sign-out-button-container:hover .sign-out-tooltip-text {
+  visibility: visible;
+}

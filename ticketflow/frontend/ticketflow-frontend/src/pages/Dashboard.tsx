@@ -7,6 +7,7 @@ import { Ticket } from "../utils/types";
 
 import '../css/dashboard.css'
 import '../css/add-ticket-button.css'
+import SignOutButton from "../components/SignOutButton";
 
 const Dashboard = () => {
   const [showModal, setShowModal] = useState<boolean>(false);
@@ -50,7 +51,7 @@ const Dashboard = () => {
   return (
     <>
       <div className="dashboard-main">
-        <h1 className="dashboard-greeting">{`Good day, ${username}!`}</h1>
+        <h1 className="dashboard-greeting">{`Nice to have you here, ${username}!`}</h1>
         <div className="add-ticket-container">
           <span className="add-ticket-tooltip-text">Add a new ticket</span>
           <button className="add-ticket-button" type="button" onClick={toggleModal}>
@@ -61,6 +62,7 @@ const Dashboard = () => {
         <Modal show={showModal} onClose={toggleModal}>
           <AddTicketForm onFormSubmit={handleAddTicket} />
         </Modal>
+        <SignOutButton />
       </div>
     </>
   );
