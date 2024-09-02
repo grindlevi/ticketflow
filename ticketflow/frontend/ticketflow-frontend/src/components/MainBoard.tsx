@@ -1,19 +1,57 @@
 import { Ticket } from "../utils/types";
-import { DragEvent, useState } from "react";
+import { DragEvent, useEffect, useState } from "react";
 import { Container } from "../utils/enums";
 import BoardContainer from "./BoardContainer";
 import "../css/main-board.css";
 
 interface MainBoardProps {
+  username: string | null
   tickets: Ticket[];
   setTickets: React.Dispatch<React.SetStateAction<Ticket[] | []>>;
 }
 
-const MainBoard: React.FC<MainBoardProps> = ({ tickets, setTickets }) => {
+const MainBoard: React.FC<MainBoardProps> = ({ username, tickets, setTickets }) => {
   const [draggedItem, setDraggedItem] = useState<Ticket | null>(null);
   const [todoTickets, setTodoTickets] = useState<Ticket[]>([]);
   const [inProgressTickets, setInProgressTickets] = useState<Ticket[]>([]);
   const [finishedTickets, setFinishedTickets] = useState<Ticket[]>([]);
+
+  useEffect(() => {
+    const getTickets = async () => {
+      const token = localStorage.getItem("jwt");
+      try {
+        const response: Response = await fetch(`/api/todos/${username}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error("Fetching tickets failed.");
+        }
+
+        const tickets: Ticket[] | [] = await response.json();
+
+        const renderTickets = (tickets: Ticket[]) => {
+          const backlogTickets = tickets.filter((ticket) => ticket.todoContainer === Container.BACKLOG)
+          const todoTickets = tickets.filter((ticket) => ticket.todoContainer === Container.TODO)
+          const inProgressTickets = tickets.filter((ticket) => ticket.todoContainer === Container.IN_PROGRESS)
+          const finishedTickets = tickets.filter((ticket) => ticket.todoContainer === Container.FINISHED)
+      
+          setTickets(backlogTickets)
+          setTodoTickets(todoTickets)
+          setInProgressTickets(inProgressTickets)
+          setFinishedTickets(finishedTickets)
+        }
+
+        renderTickets(tickets)
+        console.log(tickets);
+      } catch (error) {
+        console.error("Error fetching tickets: ", error);
+      }
+    };
+    getTickets();
+  }, [username, setTickets]);
 
   async function handleSort(criteria: string, containerName: string) {
     const username: string = localStorage.getItem("username")!;
@@ -90,82 +128,81 @@ const MainBoard: React.FC<MainBoardProps> = ({ tickets, setTickets }) => {
 
   function handleDrop(e: DragEvent<HTMLDivElement>, className: string): void {
     e.preventDefault();
-    console.log("item dropped", e.target, className);
-
-    updateTicketStatus(draggedItem!, className);
-
+  
     if (draggedItem) {
-      if (tickets.includes(draggedItem)) {
-        setTickets((prevTickets) =>
-          prevTickets.filter((ticket) => ticket !== draggedItem)
-        );
-      }
-      if (todoTickets.includes(draggedItem)) {
-        setTodoTickets((prevTickets) =>
-          prevTickets.filter((ticket) => ticket !== draggedItem)
-        );
-      }
-      if (inProgressTickets.includes(draggedItem)) {
-        setInProgressTickets((prevTickets) =>
-          prevTickets.filter((ticket) => ticket !== draggedItem)
-        );
-      }
-      if (finishedTickets.includes(draggedItem)) {
-        setFinishedTickets((prevTickets) =>
-          prevTickets.filter((ticket) => ticket !== draggedItem)
-        );
-      }
-
-      if (className.includes("backlog-container")) {
-        setTickets((prevTickets) => [...prevTickets, draggedItem]);
-      }
-      if (className.includes("todo-drop-container")) {
-        setTodoTickets((prevTickets) => [...prevTickets, draggedItem]);
-      }
-      if (className.includes("in-progress-drop-container")) {
-        setInProgressTickets((prevTickets) => [...prevTickets, draggedItem]);
-      }
-      if (className.includes("finished-drop-container")) {
-        setFinishedTickets((prevTickets) => [...prevTickets, draggedItem]);
-      }
+      const updatedTicket: Ticket = {
+        ...draggedItem,
+        todoContainer: getContainerFromClassName(className),
+        isCompleted: className.includes("finished-drop-container"),
+      };
+  
+      updateTicketState(updatedTicket);
+  
+      updateTicketStatus(updatedTicket);
+  
       setDraggedItem(null);
     }
   }
-
-  const updateTicketStatus = async (ticket: Ticket, containerName: string) => {
-    const jwt = localStorage.getItem("jwt");
-    const username = localStorage.getItem("username");
-
-    let container: Container;
-    switch (containerName) {
+  
+  function getContainerFromClassName(className: string): Container {
+    switch (className) {
       case "backlog-container":
-        container = Container.BACKLOG;
-        break;
+        return Container.BACKLOG;
       case "todo-drop-container":
-        container = Container.TODO;
-        break;
+        return Container.TODO;
       case "in-progress-drop-container":
-        container = Container.IN_PROGRESS;
-        break;
+        return Container.IN_PROGRESS;
       case "finished-drop-container":
-        container = Container.FINISHED;
-        break;
+        return Container.FINISHED;
       default:
         throw new Error("Invalid container name");
     }
-
-    const upDatedTicket: Ticket = {
-      publicId: ticket.publicId,
-      title: ticket.title,
-      description: ticket.description,
-      username: username,
-      priority: ticket.priority,
-      isCompleted: containerName === "finished-drop-container" ? true : false,
-      todoContainer: container,
-    };
-
-    console.log(upDatedTicket);
-
+  }
+  
+  function updateTicketState(updatedTicket: Ticket) {
+    const updateList = (tickets: Ticket[], updatedTicket: Ticket) =>
+      tickets.map(ticket =>
+        ticket.publicId === updatedTicket.publicId ? updatedTicket : ticket
+      );
+  
+    setTickets(prevTickets =>
+      updatedTicket.todoContainer === Container.BACKLOG
+        ? updateList(prevTickets, updatedTicket)
+        : prevTickets.filter(ticket => ticket.publicId !== updatedTicket.publicId)
+    );
+  
+    setTodoTickets(prevTickets =>
+      updatedTicket.todoContainer === Container.TODO
+        ? updateList(prevTickets, updatedTicket)
+        : prevTickets.filter(ticket => ticket.publicId !== updatedTicket.publicId)
+    );
+  
+    setInProgressTickets(prevTickets =>
+      updatedTicket.todoContainer === Container.IN_PROGRESS
+        ? updateList(prevTickets, updatedTicket)
+        : prevTickets.filter(ticket => ticket.publicId !== updatedTicket.publicId)
+    );
+  
+    setFinishedTickets(prevTickets =>
+      updatedTicket.todoContainer === Container.FINISHED
+        ? updateList(prevTickets, updatedTicket)
+        : prevTickets.filter(ticket => ticket.publicId !== updatedTicket.publicId)
+    );
+  
+    if (updatedTicket.todoContainer === Container.BACKLOG) {
+      setTickets(prevTickets => [...prevTickets, updatedTicket]);
+    } else if (updatedTicket.todoContainer === Container.TODO) {
+      setTodoTickets(prevTickets => [...prevTickets, updatedTicket]);
+    } else if (updatedTicket.todoContainer === Container.IN_PROGRESS) {
+      setInProgressTickets(prevTickets => [...prevTickets, updatedTicket]);
+    } else if (updatedTicket.todoContainer === Container.FINISHED) {
+      setFinishedTickets(prevTickets => [...prevTickets, updatedTicket]);
+    }
+  }
+  
+  async function updateTicketStatus(ticket: Ticket) {
+    const jwt = localStorage.getItem("jwt");
+  
     try {
       const response = await fetch("/api/todos", {
         method: "PATCH",
@@ -173,13 +210,18 @@ const MainBoard: React.FC<MainBoardProps> = ({ tickets, setTickets }) => {
           Authorization: `Bearer ${jwt}`,
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(upDatedTicket),
+        body: JSON.stringify(ticket),
       });
-      console.log(response);
+  
+      if (!response.ok) {
+        throw new Error("Failed to update ticket status");
+      }
+      console.log("Ticket status updated successfully:", ticket);
+  
     } catch (error) {
-      console.error(error);
+      console.error("Error updating ticket status:", error);
     }
-  };
+  }
 
   return (
     <div className="main-board">
