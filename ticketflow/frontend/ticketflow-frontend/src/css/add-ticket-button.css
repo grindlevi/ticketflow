@@ -10,7 +10,7 @@
 
   /* Adjusted position */
   top: 50%;
-  right: 101%;  /* Moved closer to the button */
+  right: 101%;
   transform: translateY(-50%);
   opacity: 0;
   transition: opacity 1s;
@@ -44,11 +44,8 @@
 
 /* Add Ticket button */
 .add-ticket-container {
-  /* 
-    Adjusted to calming blue colors
-  */
-  --hue: 210; /* Blue hue (0-360) */
-  --hue-adjust: 135; /* Adjusting for complementary shades */
+  --hue: 210;
+  --hue-adjust: 135;
 
   --hue-2: calc(var(--hue) + var(--hue-adjust));
 
@@ -56,14 +53,12 @@
 }
 
 .add-ticket-button {
-  --button-background: #ffffff; /* Changed to white */
+  --button-background: #ffffff; 
   --text-base: oklch(45% 0.175 var(--hue));
   --text-hover: oklch(95% 0.145 calc(var(--hue) + 30));
 
   --shadow-start: oklch(95% 0.145 var(--hue-2));
   --shadow-end: oklch(60% 0.29 var(--hue));
-
-  /* No color function, so we can use different opacity values */
   --shadow-inner: 60% 0.29 var(--hue);
 
   all: unset;
