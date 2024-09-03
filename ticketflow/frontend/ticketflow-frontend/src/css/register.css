@@ -1,0 +1,55 @@
+.register {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.main {
+  align-items: center;
+}
+
+.register div {
+  max-width: 400px;
+  width: 100%;
+}
+
+.input-password-container {
+  display: flex;
+  align-items: center;
+  position: relative;
+  margin-bottom: 1rem;
+}
+
+.input-confirm-password-container {
+  display: flex;
+  align-items: center;
+  position: relative;
+  margin-bottom: 1rem;
+}
+
+.input-password-container input {
+  width: 100%;
+  padding-right: 40px;
+}
+
+.input-password-container input {
+  width: 100%; 
+  padding-right: 40px;
+}
+
+.icon-span {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  position: absolute;
+  right: -2px;
+  top: 45%;
+  transform: translateY(-50%);
+  z-index: 1;
+}
+
+.icon {
+  font-size: 20px;
+}
