@@ -1,17 +1,21 @@
 import { useState } from "react";
+import { RegisterValidator } from "../classes/validation/RegisterValidator";
+import { RegisterFormData } from "../utils/types";
+import { RegistrationFetch } from "../classes/fetching/RegistrationFetch";
 
 interface RegisterProps {
-  onRegisterSuccess: () => void
+  onRegisterSuccess: () => void;
 }
 
 const Register: React.FC<RegisterProps> = ({ onRegisterSuccess }) => {
-  const [passwordAlert, setPasswodAlert] = useState(false)
-  const [formData, setFormData] = useState({
+  const [passwordAlert, setPasswodAlert] = useState(false);
+  const [formData, setFormData] = useState<RegisterFormData>({
     username: "",
     password: "",
     confirmPassword: "",
   });
 
+  // Set form data acoording to user input
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({
       ...formData,
@@ -19,35 +23,35 @@ const Register: React.FC<RegisterProps> = ({ onRegisterSuccess }) => {
     });
   };
 
+  // Form submit event
   const handleSubmit = async (e: React.FormEvent) => {
+    // Prevent page reloading
     e.preventDefault();
 
-    if (formData.password !== formData.confirmPassword) {
-      setPasswodAlert(!passwordAlert)
+    // Validating register credentials
+    const registerValidator = new RegisterValidator(formData);
+
+    if (
+      !registerValidator.validateUsernameLength() ||
+      !registerValidator.checkIfPasswordsMatch() ||
+      !registerValidator.checkIfPasswordContainsLowerCaseLetter() ||
+      !registerValidator.checkIfPasswordContainsUpperCaseLetter ||
+      !registerValidator.checkIfPasswordContainsNumber
+    ) {
+      setPasswodAlert(!passwordAlert);
       return;
     }
 
-    try {
-      const response: Response = await fetch("/api/auth/register", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
-
-      if (response.ok) {
-        console.log("Registration was succesful.");
-        onRegisterSuccess()
-      }
-    } catch (error) {
-      console.error("Something went wrong: ", error);
-    } finally {
-      setFormData({
-        username: "",
-        password: "",
-        confirmPassword: "",
-      });
+    const registrationFetch = new RegistrationFetch()
+    const registrationSuccess = await registrationFetch.registerUser(formData)
+    
+    // If credentials match the criterias, register the user.
+    if (registrationSuccess) {
+      console.log("Successful registration");
+      onRegisterSuccess()
+    } else {
+      console.error("Error during registration: ", Error);
+      
     }
   };
 
@@ -91,9 +95,14 @@ const Register: React.FC<RegisterProps> = ({ onRegisterSuccess }) => {
                 onChange={handleInputChange}
                 required
               />
-            <div className="passwordAlert">
-              {passwordAlert ? "Passwords do not match." : ""}
-            </div>
+              <div className="passwordAlert">
+                {passwordAlert ? <h3 className="register-alert">Your credentials do not match the criterias.</h3> : ""}
+                <div className="registration-criterias">
+                  <h5>Username must be longer than 6 characters</h5>
+                  <h5>Password must contain lowercase letters,</h5>
+                  <h5>uppercase letters, and at least a number</h5>
+                </div>
+              </div>
             </div>
           }
           <button type="submit">Register</button>
