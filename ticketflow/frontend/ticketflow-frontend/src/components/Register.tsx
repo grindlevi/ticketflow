@@ -3,19 +3,33 @@ import { RegisterValidator } from "../classes/validation/RegisterValidator";
 import { RegisterFormData } from "../utils/types";
 import { RegistrationFetch } from "../classes/fetching/RegistrationFetch";
 
+import "../css/register.css";
+
 interface RegisterProps {
   onRegisterSuccess: () => void;
 }
 
 const Register: React.FC<RegisterProps> = ({ onRegisterSuccess }) => {
-  const [passwordAlert, setPasswodAlert] = useState(false);
+  const [inputType, setInputType] = useState<string>("password");
+  const [icon, setIcon] = useState<string>("👁️‍🗨️");
+  const [passwordAlert, setPasswordAlert] = useState<boolean>(false);
   const [formData, setFormData] = useState<RegisterFormData>({
     username: "",
     password: "",
     confirmPassword: "",
   });
 
-  // Set form data acoording to user input
+  const togglePasswordVisibility = () => {
+    if (inputType === "password") {
+      setInputType("text");
+      setIcon("❌");
+    } else {
+      setInputType("password");
+      setIcon("👁️‍🗨️");
+    }
+  };
+
+  // Set form data according to user input
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({
       ...formData,
@@ -31,80 +45,90 @@ const Register: React.FC<RegisterProps> = ({ onRegisterSuccess }) => {
     // Validating register credentials
     const registerValidator = new RegisterValidator(formData);
 
+    // Perform validations
+    const usernameLengthValid = registerValidator.validateUsernameLength();
+    const passwordsMatch = registerValidator.checkIfPasswordsMatch();
+    const containsLowercase = registerValidator.checkIfPasswordContainsLowerCaseLetter();
+    const containsUppercase = registerValidator.checkIfPasswordContainsUpperCaseLetter();
+    const containsNumber = registerValidator.checkIfPasswordContainsNumber();
+
     if (
-      !registerValidator.validateUsernameLength() ||
-      !registerValidator.checkIfPasswordsMatch() ||
-      !registerValidator.checkIfPasswordContainsLowerCaseLetter() ||
-      !registerValidator.checkIfPasswordContainsUpperCaseLetter ||
-      !registerValidator.checkIfPasswordContainsNumber
+      !usernameLengthValid ||
+      !passwordsMatch ||
+      !containsLowercase ||
+      !containsUppercase ||
+      !containsNumber
     ) {
-      setPasswodAlert(!passwordAlert);
+      setPasswordAlert(true);
       return;
     }
 
-    const registrationFetch = new RegistrationFetch()
-    const registrationSuccess = await registrationFetch.registerUser(formData)
-    
+    const registrationFetch = new RegistrationFetch();
+    const registrationSuccess = await registrationFetch.registerUser(formData);
+
     // If credentials match the criterias, register the user.
     if (registrationSuccess) {
       console.log("Successful registration");
-      onRegisterSuccess()
+      onRegisterSuccess();
     } else {
-      console.error("Error during registration: ", Error);
-      
+      console.error("Error during registration");
     }
   };
 
   return (
-    <div className="register">
-      <div>
-        <p>Register</p>
+    <div className="main">
+      <h3 className="register-headline">Register</h3>
+      <div className="register">
         <form onSubmit={handleSubmit}>
-          {
-            <div>
-              <label htmlFor="username">Username</label>
-              <input
-                type="text"
-                id="username"
-                name="username"
-                value={formData.username}
-                onChange={handleInputChange}
-                required
-              />
-            </div>
-          }
           <div>
+            <label htmlFor="username">Username</label>
+            <input
+              type="text"
+              id="username"
+              name="username"
+              value={formData.username}
+              onChange={handleInputChange}
+              required
+            />
+          </div>
+          <div className="input-password-container">
             <label htmlFor="password">Password</label>
             <input
-              type="password"
+              type={inputType}
               id="password"
               name="password"
               value={formData.password}
               onChange={handleInputChange}
               required
             />
+            <span className="icon-span" onClick={togglePasswordVisibility}>
+              <h5 className="icon">{icon}</h5>
+            </span>
           </div>
-          {
-            <div>
-              <label htmlFor="confirmPassword">Confirm Password</label>
-              <input
-                type="password"
-                id="confirmPassword"
-                name="confirmPassword"
-                value={formData.confirmPassword}
-                onChange={handleInputChange}
-                required
-              />
-              <div className="passwordAlert">
-                {passwordAlert ? <h3 className="register-alert">Your credentials do not match the criterias.</h3> : ""}
-                <div className="registration-criterias">
-                  <h5>Username must be longer than 6 characters</h5>
-                  <h5>Password must contain lowercase letters,</h5>
-                  <h5>uppercase letters, and at least a number</h5>
-                </div>
-              </div>
-            </div>
-          }
+          <div className="input-confirm-password-container">
+            <label htmlFor="confirmPassword">Confirm Password</label>
+            <input
+              type={inputType}
+              id="confirmPassword"
+              name="confirmPassword"
+              value={formData.confirmPassword}
+              onChange={handleInputChange}
+              required
+            />
+          </div>
+          <div className="passwordAlert"></div>
+          {passwordAlert ? (
+            <h3 className="register-alert">
+              Your credentials do not match the criterias.
+            </h3>
+          ) : (
+            ""
+          )}
+          <div className="registration-criterias">
+            <h5>Username must be longer than 6 characters</h5>
+            <h5>Password must contain lowercase letters,</h5>
+            <h5>uppercase letters, and at least a number</h5>
+          </div>
           <button type="submit">Register</button>
         </form>
       </div>
