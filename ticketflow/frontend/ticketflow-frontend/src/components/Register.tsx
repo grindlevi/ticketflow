@@ -1,7 +1,6 @@
-import { useState } from "react";
-import { RegisterValidator } from "../classes/validation/RegisterValidator";
+import React, { useState } from "react";
+import useRegistration from "../hooks/useRegistration";
 import { RegisterFormData } from "../utils/types";
-import { RegistrationFetch } from "../classes/fetching/RegistrationFetch";
 
 import "../css/register.css";
 
@@ -12,24 +11,19 @@ interface RegisterProps {
 const Register: React.FC<RegisterProps> = ({ onRegisterSuccess }) => {
   const [inputType, setInputType] = useState<string>("password");
   const [icon, setIcon] = useState<string>("👁️‍🗨️");
-  const [passwordAlert, setPasswordAlert] = useState<boolean>(false);
   const [formData, setFormData] = useState<RegisterFormData>({
     username: "",
     password: "",
     confirmPassword: "",
   });
 
+  const { handleSubmit, passwordAlert } = useRegistration(onRegisterSuccess);
+
   const togglePasswordVisibility = () => {
-    if (inputType === "password") {
-      setInputType("text");
-      setIcon("❌");
-    } else {
-      setInputType("password");
-      setIcon("👁️‍🗨️");
-    }
+    setInputType((prev) => (prev === "password" ? "text" : "password"));
+    setIcon((prev) => (prev === "👁️‍🗨️" ? "❌" : "👁️‍🗨️"));
   };
 
-  // Set form data according to user input
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({
       ...formData,
@@ -37,49 +31,16 @@ const Register: React.FC<RegisterProps> = ({ onRegisterSuccess }) => {
     });
   };
 
-  // Form submit event
-  const handleSubmit = async (e: React.FormEvent) => {
-    // Prevent page reloading
+  const onSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-
-    // Validating register credentials
-    const registerValidator = new RegisterValidator(formData);
-
-    // Perform validations
-    const usernameLengthValid = registerValidator.validateUsernameLength();
-    const passwordsMatch = registerValidator.checkIfPasswordsMatch();
-    const containsLowercase = registerValidator.checkIfPasswordContainsLowerCaseLetter();
-    const containsUppercase = registerValidator.checkIfPasswordContainsUpperCaseLetter();
-    const containsNumber = registerValidator.checkIfPasswordContainsNumber();
-
-    if (
-      !usernameLengthValid ||
-      !passwordsMatch ||
-      !containsLowercase ||
-      !containsUppercase ||
-      !containsNumber
-    ) {
-      setPasswordAlert(true);
-      return;
-    }
-
-    const registrationFetch = new RegistrationFetch();
-    const registrationSuccess = await registrationFetch.registerUser(formData);
-
-    // If credentials match the criterias, register the user.
-    if (registrationSuccess) {
-      console.log("Successful registration");
-      onRegisterSuccess();
-    } else {
-      console.error("Error during registration");
-    }
+    handleSubmit(formData);
   };
 
   return (
     <div className="main">
       <h3 className="register-headline">Register</h3>
       <div className="register">
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={onSubmit}>
           <div>
             <label htmlFor="username">Username</label>
             <input
@@ -117,12 +78,10 @@ const Register: React.FC<RegisterProps> = ({ onRegisterSuccess }) => {
             />
           </div>
           <div className="passwordAlert"></div>
-          {passwordAlert ? (
+          {passwordAlert && (
             <h3 className="register-alert">
-              Your credentials do not match the criterias.
+              Your credentials do not match the criteria.
             </h3>
-          ) : (
-            ""
           )}
           <div className="registration-criterias">
             <h5>Username must be longer than 6 characters</h5>
