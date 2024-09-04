@@ -2,6 +2,8 @@ import { useState } from "react";
 import { LoginResponse } from "../utils/types";
 import { useNavigate } from "react-router-dom";
 
+import '../css/login.css'
+
 const Login: React.FC = () => {
   const navigate = useNavigate()
 
@@ -51,10 +53,10 @@ const Login: React.FC = () => {
   };
 
   return (
-    <div className="login">
-      <h2>Login</h2>
+    <div className="login-main-container">
+      <h2 className="login-header">Login</h2>
       <form onSubmit={handleSubmit}>
-        <div>
+        <div className="login-input-username">
           <label htmlFor="username">Username</label>
           <input
             type="username"
@@ -65,7 +67,7 @@ const Login: React.FC = () => {
             required
           />
         </div>
-        <div>
+        <div className="login-input-password">
           <label htmlFor="password">Password</label>
           <input
             type="password"
@@ -76,7 +78,7 @@ const Login: React.FC = () => {
             required
           />
         </div>
-        <button type="submit">Login</button>
+        <button type="submit" className="login-submit-button">Login</button>
       </form>
     </div>
   ); 

@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import Register from "../components/Register";
 import Login from "../components/Login";
 
+import "../css/home.css";
+
 const Home: React.FC = () => {
   const [isRegistering, setIsRegistering] = useState(false);
 
@@ -11,23 +13,27 @@ const Home: React.FC = () => {
 
   return (
     <div className="home">
-      <h1>Welcome to Ticketflow!</h1>
-      <p>Your one-stop solution for managing tickets efficiently.</p>
+      <h1 className="home-headline">Welcome to Ticketflow!</h1>
+      <h3 className="home-description">
+        Your one-stop solution for managing tickets efficiently.
+      </h3>
 
-      <div>
+      <div className="home-button-container">
         {isRegistering ? (
           <Register onRegisterSuccess={switchMode} />
         ) : (
           <Login />
         )}
-        <p>
-          {isRegistering
-            ? "Already have an account?"
-            : "Don't have an account?"}
-          <button onClick={switchMode}>
-            {isRegistering ? "Login here" : "Register here"}
-          </button>
-        </p>
+        <div className="home-register-button-container">
+          <h1>
+            {isRegistering
+              ? "Already have an account?"
+              : "Don't have an account?"}
+          </h1>
+            <button onClick={switchMode} className="home-login/register-button">
+              {isRegistering ? "Login here" : "Register here"}
+            </button>
+        </div>
       </div>
     </div>
   );
