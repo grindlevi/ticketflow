@@ -54,17 +54,19 @@ const Register: React.FC<RegisterProps> = ({ onRegisterSuccess }) => {
           </div>
           <div className="input-password-container">
             <label htmlFor="password">Password</label>
-            <input
-              type={inputType}
-              id="password"
-              name="password"
-              value={formData.password}
-              onChange={handleInputChange}
-              required
-            />
-            <span className="icon-span" onClick={togglePasswordVisibility}>
-              <h5 className="icon">{icon}</h5>
-            </span>
+            <div className="password-input-wrapper">
+              <input
+                type={inputType}
+                id="password"
+                name="password"
+                value={formData.password}
+                onChange={handleInputChange}
+                required
+              />
+              <span className="icon-span" onClick={togglePasswordVisibility}>
+                <h5 className="icon">{icon}</h5>
+              </span>
+            </div>
           </div>
           <div className="input-confirm-password-container">
             <label htmlFor="confirmPassword">Confirm Password</label>
