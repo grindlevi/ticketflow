@@ -21,10 +21,6 @@ body {
   background-color: #39A7FF;
 }
 
-button:hover {
-  border-color: #1280e0;
-}
-
 :root {
   color: #213547;
   background-color: #ffffff;
