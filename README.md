@@ -51,35 +51,35 @@ Ensure you have the following installed:
 
    You need to configure environment variables for the Spring Boot application. Open your terminal and set the following environment variables:
 
-   - `SPRING_DATASOURCE_URL`: The URL of your PostgreSQL database (e.g., `jdbc:postgresql://localhost:5432/mydatabase`)
-   - `SPRING_DATASOURCE_USERNAME`: The username for your PostgreSQL database
-   - `SPRING_DATASOURCE_PASSWORD`: The password for your PostgreSQL database
+   - `DB_URL`: The URL of your PostgreSQL database (e.g., `jdbc:postgresql://localhost:5432/mydatabase`)
+   - `DB_USERNAME`: The username for your PostgreSQL database
+   - `DB_PASSWORD`: The password for your PostgreSQL database
    - `JWT_SECRET`: A secret key for JWT authentication, the secret should at least be 32 characters long, but the longer the better.
 
    **For Windows Command Prompt:**
 
    ```cmd
-   set SPRING_DATASOURCE_URL=jdbc:postgresql://localhost:5432/mydatabase
-   set SPRING_DATASOURCE_USERNAME=myusername
-   set SPRING_DATASOURCE_PASSWORD=mypassword
+   set DB_URL=jdbc:postgresql://localhost:5432/mydatabase
+   set DB_USERNAME=myusername
+   set DB_PASSWORD=mypassword
    set JWT_SECRET=myverysecretkey
    ```
 
    **For Windows PowerShell:**
 
    ```powershell
-   $env:SPRING_DATASOURCE_URL="jdbc:postgresql://localhost:5432/mydatabase"
-   $env:SPRING_DATASOURCE_USERNAME="myusername"
-   $env:SPRING_DATASOURCE_PASSWORD="mypassword"
+   $env:DB_URL="jdbc:postgresql://localhost:5432/mydatabase"
+   $env:DB_USERNAME="myusername"
+   $env:DB_PASSWORD="mypassword"
    $env:JWT_SECRET="myverysecretkey"
    ```
 
    **For Unix-based Systems (macOS/Linux):**
 
    ```bash
-   export SPRING_DATASOURCE_URL=jdbc:postgresql://localhost:5432/mydatabase
-   export SPRING_DATASOURCE_USERNAME=myusername
-   export SPRING_DATASOURCE_PASSWORD=mypassword
+   export DB_URL=jdbc:postgresql://localhost:5432/mydatabase
+   export DB_USERNAME=myusername
+   export DB_PASSWORD=mypassword
    export JWT_SECRET=myverysecretkey
    ```
 
