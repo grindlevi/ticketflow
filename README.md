@@ -1,7 +1,7 @@
 
 # TicketFlow
 
-TicketFlow is a web application featuring a Spring Boot backend with a PostgreSQL database and a Vite React frontend using TypeScript, also uses Github-actions.
+TicketFlow is a web application featuring a Spring Boot backend with a PostgreSQL database and a Vite React frontend built with TypeScript. It also utilizes GitHub Actions for continuous integration. The project is still under development, so if you have any suggestions, please feel free to contact me.
 
 ## Table of Contents
 
