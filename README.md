@@ -18,6 +18,12 @@ TicketFlow is a web application featuring a Spring Boot backend with a PostgreSQ
 
 This project is a personal endeavor that I've been working on since completing my studies at Codecool. It represents my first significant application developed entirely from scratch on my own. The application is a ticketing system designed with a focus on a user-friendly interface, utilizing symbols and emojis for an intuitive and visually appealing experience. I'm excited to share this work as a demonstration of my learning and development journey.
 
+I used Jira for agile project management:
+
+![image](https://github.com/user-attachments/assets/3532a408-0e22-48b9-b245-de182c8482c1)
+
+Some videos about the app:
+
 https://github.com/user-attachments/assets/721172b3-6088-4bb2-946e-4a2a70465a30
 
 https://github.com/user-attachments/assets/be94c2e0-b673-4103-9a5e-7f58eb966ecc
@@ -29,6 +35,8 @@ https://github.com/user-attachments/assets/be94c2e0-b673-4103-9a5e-7f58eb966ecc
 * [![Postgres][PostgreSQL]][Postgres-url]
 * [![SpringBoot][Spring]][SpringBoot-url]
 * [![Java][Java]][Java-url]
+* ![GitHub Actions](https://img.shields.io/badge/github%20actions-%232671E5.svg?style=for-the-badge&logo=githubactions&logoColor=white)
+* ![Jira](https://img.shields.io/badge/jira-%230A0FFF.svg?style=for-the-badge&logo=jira&logoColor=white)
 
 ## Prerequisites
 
